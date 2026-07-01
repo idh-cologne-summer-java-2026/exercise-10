@@ -33,7 +33,12 @@ public class Hangman {
     }
 
     public static void main(String[] args) {
-        Hangman game = new Hangman("computer");
+
+        if (args.length == 0) {
+            System.out.println("Usage: java idh.java.Hangman COMPUTER");
+            return;
+        }
+        Hangman game = new Hangman(args[0]);
         game.play();
     }
 
@@ -86,7 +91,12 @@ public class Hangman {
      * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
+
+        if (guessedLetters.contains(letter)) {
+            return true;
+        }
+
+        
         return false;
     }
 
@@ -105,9 +115,24 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+
+        String result = "";
+        for (int i = 0; i < secretWord.length(); i++) {
+            char c = secretWord.charAt(i);
+            if (guessedLetters.contains(c)) {
+                result += c + " ";
+            } else {
+                result += "_";
+            }
+        
+
+        if (i < secretWord.length() - 1) {
+            result += " ";
+        }
     }
+        return result;
+    }
+
 
     /**
      * Returns true if every letter in secretWord is contained in
@@ -119,8 +144,15 @@ public class Hangman {
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+
+
+        for (int i = 0; i < secretWord.length(); i++) {
+            char c = secretWord.charAt(i);
+            if (!guessedLetters.contains(c)) {
+                return false;
+            }
+        }
+        return true; 
     }
 
     /**
