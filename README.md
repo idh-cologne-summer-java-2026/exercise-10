@@ -29,7 +29,7 @@ Ergänzen Sie die mit `TODO` markierten Methoden:
 - `runTournament(Queue<String> players)` steuert den Turnierablauf, bis nur noch eine Person übrig ist.
 - `playRound(String player1, String player2)` lässt zwei Spieler:innen gegeneinander antreten und bestimmt die/den Gewinner:in.
 - `randomMove()` liefert einen zufälligen Zug.
-- `beats(String move1, String move2)` prüft, ob ein Zug einen anderen schlägt.
+- `beats(Move move1, Move move2)` prüft, ob ein Zug einen anderen schlägt.
 
 Überlegen Sie sich beim Implementieren von `runTournament`, warum hier eine `Queue` und kein `Stack` das passende Datenstruktur ist.
 
