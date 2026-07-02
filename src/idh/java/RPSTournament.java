@@ -62,8 +62,37 @@ public class RPSTournament {
 	 * player remains, return their name.
 	 */
 	public String runTournament() {
-		// TODO: implement
-		return null;
+		// Queue<String> players = new LinkedList<String>()  
+		// always put the winner at the back
+		while (players.size() > 1) {
+			// poll() -> returns and removes the element at the front end of the container
+			String readyPlayerOne = players.poll(); // Spielberg 2018
+			String readyPlayerTwo = players.poll();
+			String winnerIs = playRound(readyPlayerOne, readyPlayerTwo);
+			
+			// same shape  
+			if (winnerIs == null) {
+				System.out.println("It is a tie - both players choose the same shape.");
+				// add() --> inserts the element passed in the parameter to the end of the queue if there is space
+		        players.add(readyPlayerOne);
+		        players.add(readyPlayerTwo);
+		    } else {
+		        // The winner takes it all and the loser has to fall (Abba)
+		        System.out.println("And the winner is " + winnerIs);
+		        players.add(winnerIs);
+			}
+		}
+
+		/* Highlander
+		 * From the Dawn of Time we came, 
+		 * moving silently down through the centuries, 
+		 * living many secret lives, 
+		 * struggling to reach the Time of the Gathering, 
+		 * when the few who remain will battle to the last. 
+		 * No one has ever known we were among you, until now.
+		 */
+		// peek() --> returns the element at the front the container. 
+		return players.peek();
 	}
 
 	/**
@@ -77,7 +106,21 @@ public class RPSTournament {
 	 */
 	public String playRound(String player1, String player2) {
 		// TODO: implement
-		return null;
+		Move movePlayerOne = randomMove();
+		Move movePlayerTwo = randomMove();
+
+		System.out.println(player1 + " (" + movePlayerOne + ") vs " + player2 + " (" + movePlayerTwo + ")");
+
+		// If both players choose the same shape, it is a tie.
+		if (movePlayerOne == movePlayerTwo) {
+			return null;
+		}
+
+		if (beats(movePlayerOne, movePlayerTwo)) {
+			return player1;  
+		} else {
+			return player2;
+		}
 	}
 
 	/**
@@ -95,7 +138,14 @@ public class RPSTournament {
 	 * TODO: implement the three winning cases.
 	 */
 	public static boolean beats(Move move1, Move move2) {
-		// TODO: implement
-		return false;
+		boolean result;
+		
+		if( (move1 == Move.ROCK && move2 == Move.SCISSORS) || 	// ROCK breaks SCISSOR
+			(move1 == Move.PAPER && move2 == Move.ROCK) ||		// PAPER covers ROCK
+			(move1 == Move.SCISSORS && move2 == Move.PAPER) ) {	// SCISSOR cuts PAPER
+				return true;
+		} else {
+				return false;
+		}
 	}
 }
