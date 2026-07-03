@@ -83,10 +83,12 @@ public class Hangman {
     /**
      * Returns true if this letter has already been guessed before.
      *
-     * TODO: implement using Set.contains() on guessedLetters
+     * IMPLEMENTED using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
+    	if (guessedLetters.contains(letter)) {
+    		return true; 	
+    	}
         return false;
     }
 
@@ -97,7 +99,7 @@ public class Hangman {
      * Only show letters that are in guessedLetters; otherwise show '_'.
      * Separate each character with a space for readability.
      *
-     * TODO:
+     * IMPLEMENTED:
      *  1. Build a String (or StringBuilder) by looping over each character
      *     of secretWord.
      *  2. If the character is in guessedLetters, add it to the result.
@@ -105,22 +107,35 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+    	StringBuilder sb = new StringBuilder();
+    	for (int i = 0; i < secretWord.length(); i++) {
+    		if (guessedLetters.contains(secretWord.charAt(i))) {
+    			sb.append(secretWord.charAt(i) + " ");
+    		}
+    		else {
+    			sb.append("_ ");
+    		}
+        }
+    	String displayWord = sb.toString();
+        return displayWord;
     }
 
     /**
      * Returns true if every letter in secretWord is contained in
      * guessedLetters (i.e. the player has fully revealed the word).
      *
-     * TODO:
+     * IMPLEMENTED:
      *  1. Loop over each character in secretWord.
      *  2. If any character is NOT in guessedLetters, return false.
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+    	for (int i = 0; i < secretWord.length(); i++) {
+    		if (! (guessedLetters.contains(secretWord.charAt(i)))) {
+    			return false;
+    		}
+    	}
+        return true;
     }
 
     /**
