@@ -120,6 +120,7 @@ public class Hangman {
     	}
     	String res = sb.toString();
         return res;
+        
     	}
     
 
