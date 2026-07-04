@@ -25,7 +25,7 @@ public class Hangman {
 
     private final String secretWord;
     private final Set<Character> guessedLetters;
-    // 2nd set: needed for LinkedHashSet later --> frankly, a LinkedHashSet seems to work much better here
+    // 2nd set: needed for LinkedHashSet later --> frankly, a LinkedHashSet seems to work much better here --> NVM, scrap that thought
     private final Set<Character> guessedLettersOd; 
     private int wrongGuesses;
 
@@ -50,7 +50,7 @@ public class Hangman {
 
         while (wrongGuesses < MAX_WRONG_GUESSES) {
             System.out.println(getHangmanArt());
-            System.out.println("Word: " + buildDisplayWord());
+            System.out.println("Word: " + buildDisplayWord() + "\n" + "Progress:" + guessedLettersOd);
             System.out.println("Wrong guesses: " + wrongGuesses + "/" + MAX_WRONG_GUESSES);
 
             if (isWordFullyGuessed()) {
