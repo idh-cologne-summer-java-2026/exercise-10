@@ -113,7 +113,7 @@ public class Hangman {
     		Character c = secretWord.charAt(i);
     		//contains() does not accept single chars, I falsely checked whether secretWord contained the Letter... secretWord.contains expects a String, guessedLettersOd on the other hand wants an Object, thus no toString needed 
     		if(guessedLettersOd.contains(c)) { 
-    			sb.append(c + " ");
+    			sb.append(" "+ c);
     		} else {
     			sb.append(" " + "_");
     		}
