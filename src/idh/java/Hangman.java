@@ -1,6 +1,7 @@
 package idh.java;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Scanner;
 
@@ -24,11 +25,14 @@ public class Hangman {
 
     private final String secretWord;
     private final Set<Character> guessedLetters;
+    // 2nd set: needed for LinkedHashSet later --> frankly, a LinkedHashSet seems to work much better here
+    private final Set<Character> guessedLettersOd; 
     private int wrongGuesses;
 
     public Hangman(String secretWord) {
         this.secretWord = secretWord.toUpperCase();
         this.guessedLetters = new HashSet<Character>();
+        this.guessedLettersOd = new LinkedHashSet<Character>(); //specifying the Type here is not needed, but not wrong either
         this.wrongGuesses = 0;
     }
 
@@ -62,7 +66,7 @@ public class Hangman {
                 continue;
             }
 
-            guessedLetters.add(guess);
+            guessedLettersOd.add(guess);
 
             if (secretWord.indexOf(guess) == -1) {
                 wrongGuesses++;
@@ -83,11 +87,9 @@ public class Hangman {
     /**
      * Returns true if this letter has already been guessed before.
      *
-     * TODO: implement using Set.contains() on guessedLetters
      */
-    public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+    public boolean alreadyGuessed(char letter) { 
+    	return guessedLettersOd.contains(letter);
     }
 
     /**
@@ -105,9 +107,21 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
-    }
+    	StringBuilder sb = new StringBuilder();
+    	
+    	for(int i = 0; i < secretWord.length(); i++) {
+    		Character c = secretWord.charAt(i);
+    		//contains() does not accept single chars, I falsely checked whether secretWord contained the Letter... secretWord.contains expects a String, guessedLettersOd on the other hand wants an Object, thus no toString needed 
+    		if(guessedLettersOd.contains(c)) { 
+    			sb.append(c + " ");
+    		} else {
+    			sb.append(" " + "_");
+    		}
+    	}
+    	String res = sb.toString();
+        return res;
+    	}
+    
 
     /**
      * Returns true if every letter in secretWord is contained in
