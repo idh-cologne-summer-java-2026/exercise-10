@@ -5,17 +5,15 @@ import java.util.Queue;
 import java.util.Random;
 
 /**
- * Rock-Paper-Scissors Tournament Bracket
+ * Rock-Paper-Scissors-Spock-Lizard Tournament Bracket
  *
  * Rules: - All players start in a queue. - Repeatedly take the first two
  * players from the front of the queue and let them play one round of
  * Rock-Paper-Scissors. - The winner goes to the BACK of the queue. The loser is
  * eliminated. - On a tie, replay the round (nobody is eliminated). - If only
- * one player is left in the queue, that player is the champion.
- *
- * Your job: implement the methods marked with TODO.
+ * one player is left in the queue, that player is the champion..
  */
-public class RPSTournament {
+public class TheBigBangTheoryTournament {
 
 	Random random = new Random();
 
@@ -28,19 +26,26 @@ public class RPSTournament {
 	 * literal value of one category.
 	 */
 	enum Move {
-		ROCK, PAPER, SCISSORS
+		ROCK, PAPER, SCISSORS, SPOCK, LIZARD
 	};
 
 	Queue<String> players = new LinkedList<String>();
 
 	public static void main(String[] args) {
 
-		RPSTournament rps = new RPSTournament();
+		TheBigBangTheoryTournament rps = new TheBigBangTheoryTournament();
 		rps.addPlayer("Alice");
 		rps.addPlayer("Bob");
 		rps.addPlayer("Charlie");
 		rps.addPlayer("Dana");
 		rps.addPlayer("Eve");
+		rps.addPlayer("Leonard");
+		rps.addPlayer("Sheldon");
+		rps.addPlayer("Penny");
+		rps.addPlayer("Howard");
+		rps.addPlayer("Rajesh");
+		rps.addPlayer("Bernadette");
+		rps.addPlayer("Amy");
 
 		String champion = rps.runTournament();
 		System.out.println("\n The champion is: " + champion);
@@ -124,15 +129,15 @@ public class RPSTournament {
 	}
 
 	/**
-	 * Returns a random move: "ROCK", "PAPER", or "SCISSORS".
+	 * Returns a random move: "ROCK", "PAPER", "SCISSORS", "SPOCK, or "LIZARD".
 	 *
 	 */
 	public Move randomMove() {
-		return Move.values()[random.nextInt(3)];
+		return Move.values()[random.nextInt(5)];
 	}
 
 	/**
-	 * Returns true if move1 beats move2 according to standard Rock-Paper-Scissors
+	 * Returns true if move1 beats move2 according to standard Rock-Paper-Scissors-Spock-Lizard
 	 * rules.
 	 *
 	 * TODO: implement the three winning cases.
@@ -140,9 +145,11 @@ public class RPSTournament {
 	public static boolean beats(Move move1, Move move2) {
 		boolean result;
 		
-		if( (move1 == Move.ROCK && move2 == Move.SCISSORS) || 	// ROCK breaks SCISSORS
-			(move1 == Move.PAPER && move2 == Move.ROCK) ||		// PAPER covers ROCK
-			(move1 == Move.SCISSORS && move2 == Move.PAPER) ) {	// SCISSORS cuts PAPER
+		if( (move1 == Move.ROCK && (move2 == Move.SCISSORS || move2 == Move.LIZARD)) || 	// ROCK breaks SCISSOR and crushes LIZARD
+			(move1 == Move.PAPER && (move2 == Move.ROCK || move2 == Move.SPOCK)) ||			// PAPER covers ROCK and disproves Spock
+			(move1 == Move.SCISSORS && (move2 == Move.PAPER || move2 == Move.LIZARD)) ||	// SCISSORS cuts PAPER and decapitates LIZARD
+			(move1 == Move.SPOCK && (move2 == Move. SCISSORS || move2 ==Move.ROCK)) ||		// SPOCK smashes SCISSORS and vaporizes ROCK
+			(move1 == Move.LIZARD && (move2 == Move.PAPER || move2 ==Move.SPOCK) ) ) {		// LIZARD eats PAPER and poisons SPOCK
 				return true;
 		} else {
 				return false;
