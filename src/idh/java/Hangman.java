@@ -82,12 +82,9 @@ public class Hangman {
 
     /**
      * Returns true if this letter has already been guessed before.
-     *
-     * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+        return guessedLetters.contains(letter);
     }
 
     /**
@@ -97,30 +94,35 @@ public class Hangman {
      * Only show letters that are in guessedLetters; otherwise show '_'.
      * Separate each character with a space for readability.
      *
-     * TODO:
-     *  1. Build a String (or StringBuilder) by looping over each character
-     *     of secretWord.
-     *  2. If the character is in guessedLetters, add it to the result.
-     *     Otherwise add '_'.
-     *  3. Add a space between characters for readability.
      */
+     
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+ 
+    	StringBuilder result = new StringBuilder();
+    	for(int i = 0; i < secretWord.length(); i++) {
+    		char secretLetter = secretWord.charAt(i);
+    		if(alreadyGuessed(secretLetter)) {
+    			result.append(secretLetter);
+    		} else {
+    			result.append('_');
+    		} 
+    		result.append(" ");
+    	}
+        return result.toString();
     }
 
     /**
      * Returns true if every letter in secretWord is contained in
      * guessedLetters (i.e. the player has fully revealed the word).
      *
-     * TODO:
-     *  1. Loop over each character in secretWord.
-     *  2. If any character is NOT in guessedLetters, return false.
-     *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+    	for(int i = 0; i < secretWord.length(); i++) {
+    		if(!alreadyGuessed(secretWord.charAt(i))) {
+    			return false;
+    		} 
+    	}
+    	return true;
     }
 
     /**
