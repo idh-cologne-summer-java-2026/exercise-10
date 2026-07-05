@@ -135,7 +135,21 @@ public class Hangman {
      */
     public boolean isWordFullyGuessed() {
         // TODO: implement
-        return false;
+    	boolean res;
+    	Character [] guessedLettersOdArr = guessedLettersOd.toArray(new Character[0]);
+    	for(Character c: guessedLettersOd) {
+    		
+    		if(!secretWord.contains(guessedLettersOdArr));
+    		res = false;
+    		return res;
+    	}
+//    	
+//    	String[] guessedLettersOdArr = guessedLettersOd.toArray(new String[0]);
+//    	for(int i = 0; i <= secretWord.length()-1; i++) {
+//    		if(!secretWord.contains(guessedLettersOdArr[i]))
+//    			return false;
+//    	}
+    	return true;
     }
 
     /**

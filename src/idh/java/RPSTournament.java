@@ -30,7 +30,6 @@ public class RPSTournament {
 	enum Move {
 		ROCK, PAPER, SCISSORS
 	};
-
 	Queue<String> players = new LinkedList<String>();
 
 	public static void main(String[] args) {
@@ -63,7 +62,16 @@ public class RPSTournament {
 	 */
 	public String runTournament() {
 		// TODO: implement
-		return null;
+		String firstPlayer = null, secondPlayer = null;
+		Queue <String> tempQueue = new LinkedList<String>();
+		for(int i = 0; players.size() > 1 && i < 2; i++) {
+			String removed = players.remove(); //removes the first 2 Players
+			tempQueue.add(removed); //save in new Queue to work with
+			firstPlayer = tempQueue.poll();
+			secondPlayer = tempQueue.poll();
+		}
+		return this.playRound(firstPlayer, secondPlayer); //enters first 2 players in next round
+		 
 	}
 
 	/**
