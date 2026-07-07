@@ -54,7 +54,7 @@ public class RPSTournament {
 	 * Runs the tournament until only one player remains. Returns the name of the
 	 * champion.
 	 *
-	 * TODO: 1. While there is more than one player in the queue: a. Dequeue the
+	 * IMPLEMENTED: 1. While there is more than one player in the queue: a. Dequeue the
 	 * first two players. b. Play a round between them using playRound(). c. If
 	 * there's a winner, print the result and enqueue the winner at the back of the
 	 * queue. d. If it's a tie, print that it's a tie and put BOTH players back in
@@ -62,22 +62,47 @@ public class RPSTournament {
 	 * player remains, return their name.
 	 */
 	public String runTournament() {
-		// TODO: implement
-		return null;
+		while (players.size() > 1) {
+			String player1 = players.poll();
+			String player2 = players.poll();	
+			
+		String winner = playRound(player1, player2);
+		
+		if (winner != null) {
+			System.out.println("The winner is: " + winner + "!");
+			players.add(winner);
+		} else {
+			System.out.println("It's a tie!");
+			players.add(player1);
+			players.add(player2);
+		}
+		}
+		if (players.isEmpty()) {
+			return null;
+		} else {
+			return players.poll();
+		}
 	}
 
 	/**
 	 * Plays one round of Rock-Paper-Scissors between two players. Returns the name
 	 * of the winner, or null if it's a tie.
 	 *
-	 * TODO: 1. Generate a random move for each player using randomMove(). 2. Print
+	 * IMPLEMENTED: 1. Generate a random move for each player using randomMove(). 2. Print
 	 * something like "Alice (ROCK) vs Bob (SCISSORS)". 3. Use beats() to determine
 	 * the winner and return their name. 4. If both moves are the same, return null
 	 * (tie).
 	 */
 	public String playRound(String player1, String player2) {
-		// TODO: implement
-		return null;
+		Move player1Move = randomMove();
+		Move player2Move = randomMove();
+		
+		if (player1Move == player2Move) {
+			return null;
+		} else if (beats(player1Move, player2Move)) {
+			return player1;
+		} else
+			return player2; 
 	}
 
 	/**
@@ -92,10 +117,14 @@ public class RPSTournament {
 	 * Returns true if move1 beats move2 according to standard Rock-Paper-Scissors
 	 * rules.
 	 *
-	 * TODO: implement the three winning cases.
+	 * IMPLEMENTED: the three winning cases.
 	 */
 	public static boolean beats(Move move1, Move move2) {
-		// TODO: implement
-		return false;
+		if (move1.equals(Move.ROCK) && move2.equals(Move.SCISSORS)
+			|| move1.equals(Move.SCISSORS) && move2.equals(Move.ROCK)
+			|| move1.equals(Move.PAPER) && move2.equals(Move.ROCK)) {
+		return true;
+		}
+	return false;
 	}
 }
