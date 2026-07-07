@@ -62,8 +62,22 @@ public class RPSTournament {
 	 * player remains, return their name.
 	 */
 	public String runTournament() {
-		// TODO: implement
-		return null;
+		while (players.size() != 1) {
+			String Player1 = players.remove();
+			String Player2 = players.remove();
+			System.out.println("Players " + Player1 + " and " + Player2 + " are facing off.");
+			String Winner = playRound(Player1, Player2);
+			if (Winner != null) {
+				System.out.println(Winner + " has won!");
+				players.add(Winner);
+			}
+			else {
+				System.out.println("It's a tie!");
+				players.add(Player1);
+				players.add(Player2);
+			}
+		}
+		return players.element();
 	}
 
 	/**
@@ -76,8 +90,16 @@ public class RPSTournament {
 	 * (tie).
 	 */
 	public String playRound(String player1, String player2) {
-		// TODO: implement
-		return null;
+		Move Move1 = randomMove();
+		Move Move2 = randomMove();
+		System.out.println(player1 + " (" + Move1 + ") vs " + player2 + " (" + Move2 + ")");
+		if (beats(Move1, Move2)) {
+			return player1;
+		}
+		if (beats(Move2, Move1)) {
+			return player2;
+		}
+		else return null;
 	}
 
 	/**
@@ -95,7 +117,15 @@ public class RPSTournament {
 	 * TODO: implement the three winning cases.
 	 */
 	public static boolean beats(Move move1, Move move2) {
-		// TODO: implement
+		if (move1 == Move.ROCK && move2 == Move.SCISSORS) {
+			return true;
+		}
+		if (move1 == Move.PAPER && move2 == Move.ROCK) {
+			return true;
+		}
+		if (move1 == Move.SCISSORS && move2 == Move.PAPER) {
+			return true;
+		}
 		return false;
 	}
 }
