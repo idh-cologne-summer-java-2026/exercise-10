@@ -87,7 +87,8 @@ public class Hangman {
      */
     public boolean alreadyGuessed(char letter) {
         // TODO: implement
-        return false;
+    	
+        return guessedLetters.contains(letter);
     }
 
     /**
@@ -106,7 +107,19 @@ public class Hangman {
      */
     public String buildDisplayWord() {
         // TODO: implement
-        return null;
+    	StringBuilder result = new StringBuilder();
+    	for(int i = 0; i < secretWord.length(); i++) {
+    		char letter = secretWord.charAt(i);
+    		if(guessedLetters.contains(letter)) {
+    			result.append(letter + " ");
+    		}else {
+    			result.append('_' + " ");
+    		}
+    		
+    	}
+    	return result.toString();
+		
+       
     }
 
     /**
@@ -120,7 +133,12 @@ public class Hangman {
      */
     public boolean isWordFullyGuessed() {
         // TODO: implement
-        return false;
+    	for (char letter : secretWord.toCharArray()) {
+    		if(!guessedLetters.contains(letter)) {
+    			return false;
+    		}
+    	}
+        return true;
     }
 
     /**

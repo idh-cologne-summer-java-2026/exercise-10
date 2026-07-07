@@ -63,7 +63,23 @@ public class RPSTournament {
 	 */
 	public String runTournament() {
 		// TODO: implement
-		return null;
+		while (players.size() > 1) {
+			String player1 = players.poll();
+			String player2 = players.poll();
+			
+			String winner = playRound(player1, player2);
+			
+			if (winner != null) {
+				System.out.println(winner + "wins!\n");
+				players.offer(winner);
+			}else {
+				System.out.println("It's a tie!");
+				players.add(player1);
+				players.add(player2);
+			}
+		}
+		
+		return players.poll();
 	}
 
 	/**
@@ -77,7 +93,21 @@ public class RPSTournament {
 	 */
 	public String playRound(String player1, String player2) {
 		// TODO: implement
-		return null;
+		Move move1 = randomMove();
+		Move move2 = randomMove();
+		
+		System.out.println(player1 + " (" + move1 + ") vs" + player2 + " (" + move2 + ")" );
+		
+		if(move1 == move2) {
+			return null;
+		}
+		
+		if (beats(move1, move2)) {
+			return player1;
+		}else {
+			return player2;
+		}
+		
 	}
 
 	/**
@@ -94,8 +124,22 @@ public class RPSTournament {
 	 *
 	 * TODO: implement the three winning cases.
 	 */
+	//Scissors -> Paper
+	// Paper -> Rock
+	// Rock -> Scissors
+	 
+	
+	
 	public static boolean beats(Move move1, Move move2) {
 		// TODO: implement
+		if (move1 == Move.SCISSORS && move2 == Move.PAPER) return true;
+		if (move1 == Move.PAPER && move2 == Move.ROCK) return true;
+		if (move1 == Move.ROCK && move2 == Move.SCISSORS) return true;
+		
+		
+		
 		return false;
+		
+		
 	}
 }
