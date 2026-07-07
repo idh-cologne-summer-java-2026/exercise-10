@@ -55,7 +55,7 @@ public class Hangman {
             }
 
             System.out.print("Guess a letter: ");
-            char guess = scanner.nextLine().toUpperCase().charAt(0);
+            char guess = scanner.nextLine().toUpperCase().charAt(0); // Großbuchstaben 
 
             if (alreadyGuessed(guess)) {
                 System.out.println("You already tried '" + guess + "'! Try a different letter.");
@@ -85,15 +85,19 @@ public class Hangman {
      *
      * TODO: implement using Set.contains() on guessedLetters
      */
-    public boolean alreadyGuessed(char letter) {
-        // TODO: implement
+    public boolean alreadyGuessed(char letter) { // Gibt ein true aus, falls der Buchstabe schon einmak genannt worden ist
+        if (guessedLetters.contains(letter)) {  // Gibt false aus, falls noch nicht (deshalb if else) 
+        	return true; 
+        } else {
         return false;
+      }
     }
-
+    
+    
     /**
      * Builds the current display version of the word, e.g. for secretWord
      * "COMPUTER" and guessedLetters {C, O, T}, this should return:
-     *   "C O _ _ _ T E R"
+     *   C O _ _ _ T E R"
      * Only show letters that are in guessedLetters; otherwise show '_'.
      * Separate each character with a space for readability.
      *
@@ -105,10 +109,19 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+        StringBuilder display = new StringBuilder();// neuen String Builder implementieren 
+        for (int i = 0; i < secretWord.length(); i++) { // Bei 0 anfangen & das Wort durchgehen 
+        	char richtigerBuchstabe = secretWord.charAt(i); 
+        	if (guessedLetters.contains(richtigerBuchstabe)) { // Falls die erratenen Buchstaben richtig sind, werden sie dem Wort hinzugefügt 
+        	} else {   // else return '_' 
+        	display.append('_'); 
+        	
+        	}
+        }
+        
+    return display.toString(); 
+    		
     }
-
     /**
      * Returns true if every letter in secretWord is contained in
      * guessedLetters (i.e. the player has fully revealed the word).
@@ -118,10 +131,18 @@ public class Hangman {
      *  2. If any character is NOT in guessedLetters, return false.
      *  3. If you get through the whole word, return true.
      */
-    public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
-    }
+	
+      public boolean isWordFullyGuessed() {
+        for (int i = 0; i < secretWord.length(); i++) {
+            char richtigerBuchstabe = secretWord.charAt(i);
+            if (!guessedLetters.contains(richtigerBuchstabe)) {
+                return false; 
+            }
+        }
+        
+        return true;
+     }
+    
 
     /**
      * Returns the ASCII art for the current number of wrong guesses
