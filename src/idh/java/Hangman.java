@@ -86,8 +86,7 @@ public class Hangman {
      * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+        return guessedLetters.contains(letter);
     }
 
     /**
@@ -98,6 +97,7 @@ public class Hangman {
      * Separate each character with a space for readability.
      *
      * TODO:
+     
      *  1. Build a String (or StringBuilder) by looping over each character
      *     of secretWord.
      *  2. If the character is in guessedLetters, add it to the result.
@@ -105,10 +105,21 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
-    }
+        StringBuilder displayWord = new StringBuilder();
+        for (char c : secretWord.toCharArray()) {
+            if (guessedLetters.contains(c)) {
+                displayWord.append(c);
+            } else {
+                displayWord.append('_');
+            }
+            displayWord.append(' ');
+        }
+        return displayWord.toString().trim();
+    
+    
 
+    }
+    
     /**
      * Returns true if every letter in secretWord is contained in
      * guessedLetters (i.e. the player has fully revealed the word).
@@ -119,8 +130,12 @@ public class Hangman {
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+        for (char c : secretWord.toCharArray()) {
+            if (!guessedLetters.contains(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
