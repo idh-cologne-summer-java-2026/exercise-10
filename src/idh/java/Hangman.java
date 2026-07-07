@@ -33,7 +33,12 @@ public class Hangman {
     }
 
     public static void main(String[] args) {
-        Hangman game = new Hangman("computer");
+        if (args.length == 0) {
+            System.out.println("Please provide a word as command line argument.");
+            return;
+        }
+
+        Hangman game = new Hangman(args[0]);
         game.play();
     }
 
@@ -86,8 +91,7 @@ public class Hangman {
      * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+    	return guessedLetters.contains(letter);
     }
 
     /**
@@ -105,8 +109,23 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+    	StringBuilder display = new StringBuilder();
+
+        for (int i = 0; i < secretWord.length(); i++) {
+            char current = secretWord.charAt(i);
+
+            if (guessedLetters.contains(current)) {
+                display.append(current);
+            } else {
+                display.append('_');
+            }
+
+            if (i < secretWord.length() - 1) {
+                display.append(' ');
+            }
+        }
+        
+        return display.toString();
     }
 
     /**
@@ -119,8 +138,15 @@ public class Hangman {
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+    	for (int i = 0; i < secretWord.length(); i++) {
+            char current = secretWord.charAt(i);
+
+            if (!guessedLetters.contains(current)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
