@@ -4,6 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Scanner;
 
+
+/*Warum verwenden wir ein Set?
+ * Im Spiel Hangman ist es wichtig, die Buchstaben zu verfolgen, die der Spieler bereits geraten hat. 
+ * Ein Set ist eine geeignete Datenstruktur dafür, da es keine Duplikate zulässt und das Überprüfen, 
+ * ob ein Buchstabe bereits geraten wurde, sehr effizient ist.
+ * */
+
 /**
  * Hangman
  *
@@ -86,8 +93,10 @@ public class Hangman {
      * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+    	if (guessedLetters.contains(letter)) {
+    		return true;	
+    		}
+    	return false;
     }
 
     /**
@@ -106,7 +115,16 @@ public class Hangman {
      */
     public String buildDisplayWord() {
         // TODO: implement
-        return null;
+    	StringBuilder result = new StringBuilder();
+    	for(int i = 0; i < secretWord.length(); i++) {
+    		char letter = secretWord.charAt(i);
+    		if (guessedLetters.contains(letter)) {
+    			result.append(letter + "_");
+    		} else {
+    			result.append('_' + " ");
+    		}
+    	}
+    	return result.toString();
     }
 
     /**
@@ -120,7 +138,13 @@ public class Hangman {
      */
     public boolean isWordFullyGuessed() {
         // TODO: implement
-        return false;
+    	for(char letter: secretWord.toCharArray()) {
+    		if (!guessedLetters.contains(letter)) {
+    			return false;
+    		} 
+   
+    	}
+    	return true;
     }
 
     /**

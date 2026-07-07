@@ -4,6 +4,19 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+
+/*
+* Warum verwenden wir eine Queue für das Turnier?
+* Eine Queue (Warteschlange) ist eine Datenstruktur, die nach dem FIFO-Prinzip (First In, First Out) arbeitet. 
+* Das bedeutet, dass das erste Element, das in die Queue eingefügt wird, auch das erste ist, das wieder entfernt wird.
+* In einem Rock-Paper-Scissors-Turnier ist es sinnvoll, eine Queue zu verwenden, da die Spieler in der Reihenfolge, 
+* in der sie dem Turnier beitreten, gepaart werden. Die ersten beiden Spieler in der Queue spielen gegeneinander, 
+* und der Gewinner wird wieder ans Ende der Queue gesetzt, während der Verlierer eliminiert wird. 
+* So ist sichergestellt, dass alle Spieler fair und in der richtigen Reihenfolge gegeneinander antreten,
+*  bis nur noch ein Spieler übrig bleibt, der als Champion hervorgeht.
+*/
+
+
 /**
  * Rock-Paper-Scissors Tournament Bracket
  *
@@ -63,7 +76,23 @@ public class RPSTournament {
 	 */
 	public String runTournament() {
 		// TODO: implement
-		return null;
+		while (players.size()>1) {
+			String player1 = players.remove();
+			String player2 = players.remove();
+			
+			String winner = playRound(player1, player2);
+			
+			if (winner != null) {
+				System.out.println(winner + " wins! \n");
+				players.add(winner);
+			} else {
+				System.out.println("It's a tie! \n ");
+				players.add(player1);
+				players.add(player2);
+			}
+			
+		}
+		return players.poll();
 	}
 
 	/**
@@ -77,7 +106,22 @@ public class RPSTournament {
 	 */
 	public String playRound(String player1, String player2) {
 		// TODO: implement
-		return null;
+		
+		Move move1 = randomMove();
+		Move move2 = randomMove();
+		
+		System.out.println(player1 + " (" + move1 + ") " + "vs. " + player2 + " (" + move2 + ")");
+		
+		if (move1 == move2) {
+			return null;
+		}
+		
+		if (beats(move1, move2)) {
+			return player1;
+		} else {
+			return player2;
+		}
+		
 	}
 
 	/**
@@ -93,9 +137,17 @@ public class RPSTournament {
 	 * rules.
 	 *
 	 * TODO: implement the three winning cases.
+	 * Scissors beats Paper
+	 * Paper beats Rock
+	 * Rock beats Scissors
 	 */
 	public static boolean beats(Move move1, Move move2) {
 		// TODO: implement
+		
+		if (move1 == Move.SCISSORS && move2 == Move.PAPER) return true;
+		if (move1 == Move.PAPER && move2 == Move.ROCK) return true;
+		if (move1 == Move.ROCK && move2 == Move.SCISSORS) return true;
+		
 		return false;
 	}
 }
