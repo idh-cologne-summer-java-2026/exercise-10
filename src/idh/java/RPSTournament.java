@@ -62,9 +62,25 @@ public class RPSTournament {
 	 * player remains, return their name.
 	 */
 	public String runTournament() {
-		// TODO: implement
-		return null;
-	}
+		while (players.size()>=1) {
+			String p1= players.poll();
+			String p2= players.poll();
+			String winner = playRound(p1,p2);
+			if (winner!=null) {
+				System.out.println("The winner is:" + winner + " !");
+				players.add(winner);
+			}else {
+				System.out.println ("It is a tie!");
+				players.add(p1);
+				players.add(p2);
+			}
+			
+		}
+		if (players.isEmpty()) {
+			return null ;
+		}else {
+		return players.poll();
+	}}
 
 	/**
 	 * Plays one round of Rock-Paper-Scissors between two players. Returns the name
@@ -76,9 +92,16 @@ public class RPSTournament {
 	 * (tie).
 	 */
 	public String playRound(String player1, String player2) {
-		// TODO: implement
+		Move p1Move = randomMove();
+		Move p2Move = randomMove();
+		System.out.println (player1 + " uses "+ p1Move + " vs "+ player2 + " uses " + p2Move);
+	if (p1Move== p2Move) {
 		return null;
-	}
+	} else if (beats (p1Move,p2Move)) {
+		return player1;
+	} else {
+		return player2;
+	}}
 
 	/**
 	 * Returns a random move: "ROCK", "PAPER", or "SCISSORS".
@@ -86,6 +109,8 @@ public class RPSTournament {
 	 */
 	public Move randomMove() {
 		return Move.values()[random.nextInt(3)];
+	
+		
 	}
 
 	/**
@@ -95,7 +120,11 @@ public class RPSTournament {
 	 * TODO: implement the three winning cases.
 	 */
 	public static boolean beats(Move move1, Move move2) {
-		// TODO: implement
+		if (move1.equals(Move.ROCK)&&move2.equals(Move.SCISSORS)
+				|| move1.equals(Move.SCISSORS)&&move2.equals(Move.PAPER) 
+						||move1.equals(Move.PAPER)&&move2.equals(Move.ROCK )){
+						return true;	
+						}
 		return false;
 	}
 }
