@@ -86,8 +86,10 @@ public class Hangman {
      * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+        if (guessedLetters.contains(letter))
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -105,8 +107,19 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+        String displayword = "";
+        for(char c : secretWord.toCharArray())
+        {
+            if(guessedLetters.contains(c))
+            {
+                displayword = displayword + c + " ";
+            }
+            else
+            {
+                displayword = displayword + "_ ";
+            }
+        }
+        return displayword;
     }
 
     /**
@@ -119,8 +132,14 @@ public class Hangman {
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+        for(char c : secretWord.toCharArray())
+        {
+            if(!guessedLetters.contains(c))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
