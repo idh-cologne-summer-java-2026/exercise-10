@@ -132,7 +132,7 @@ public class Hangman {
         String[] stages = {
             // 0 wrong guesses
             "  +---+\n"
-          + "  |   |\n"
+          + "   |    |\n"
           + "      |\n"
           + "      |\n"
           + "      |\n"
