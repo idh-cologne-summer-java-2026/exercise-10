@@ -63,7 +63,8 @@ public class Hangman {
             }
 
             guessedLetters.add(guess);
-
+            
+            //wenn Buchstabe nicht in Wort = True (?)
             if (secretWord.indexOf(guess) == -1) {
                 wrongGuesses++;
                 System.out.println("'" + guess + "' is not in the word.");
@@ -83,11 +84,11 @@ public class Hangman {
     /**
      * Returns true if this letter has already been guessed before.
      *
-     * TODO: implement using Set.contains() on guessedLetters
+     * 
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+    	
+        return guessedLetters.contains(letter);
     }
 
     /**
@@ -97,7 +98,7 @@ public class Hangman {
      * Only show letters that are in guessedLetters; otherwise show '_'.
      * Separate each character with a space for readability.
      *
-     * TODO:
+     * :
      *  1. Build a String (or StringBuilder) by looping over each character
      *     of secretWord.
      *  2. If the character is in guessedLetters, add it to the result.
@@ -105,8 +106,17 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+    	StringBuilder result = new StringBuilder();
+    	for (int i = 0; i < secretWord.length(); i++) {
+    		char letter = secretWord.charAt(i);
+    		if (guessedLetters.contains(letter)) {
+    			result.append(letter + " ");
+    		} else {
+    			result.append('_' + " ");
+    		}
+    			
+    	}
+    	return result.toString();
     }
 
     /**
@@ -119,7 +129,12 @@ public class Hangman {
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
+    	for(char letter : secretWord.toCharArray()) {
+    		if (!guessedLetters.contains(letter)) {
+    			return false;
+    		}
+    	}
+    	
         return false;
     }
 
