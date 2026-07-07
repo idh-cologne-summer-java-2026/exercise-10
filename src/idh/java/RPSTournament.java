@@ -29,7 +29,7 @@ public class RPSTournament {
 	 */
 	enum Move {
 		ROCK, PAPER, SCISSORS
-	};
+	}
 
 	Queue<String> players = new LinkedList<String>();
 
@@ -43,7 +43,9 @@ public class RPSTournament {
 		rps.addPlayer("Eve");
 
 		String champion = rps.runTournament();
-		System.out.println("\n The champion is: " + champion);
+		System.out.println("===============================");
+		System.out.println("The champion is: " + champion);
+		System.out.println("===============================");
 	}
 
 	public void addPlayer(String playerName) {
@@ -62,8 +64,30 @@ public class RPSTournament {
 	 * player remains, return their name.
 	 */
 	public String runTournament() {
-		// TODO: implement
-		return null;
+		// Solange mehr als 1 Spieler in der Queue ist, geht das Turnier weiter
+		while (players.size() > 1) {
+			// a. Die ersten beiden Spieler aus der Queue holen (entfernen)
+			String player1 = players.poll();
+			String player2 = players.poll();
+
+			// b. Eine Runde spielen
+			String winner = playRound(player1, player2);
+
+			// c & d. Gewinner prüfen
+			if (winner == null) {
+				System.out.println("-> It's a tie! Both players go back to the queue.\n");
+				// Bei Unentschieden kommen beide wieder hinten in die Schlange
+				players.add(player1);
+				players.add(player2);
+			} else {
+				System.out.println("-> " + winner + " wins the round!\n");
+				// Nur der Gewinner darf wieder in die Schlange
+				players.add(winner);
+			}
+		}
+		
+		// 2. Der letzte verbleibende Spieler ist der Champion
+		return players.poll();
 	}
 
 	/**
@@ -76,13 +100,28 @@ public class RPSTournament {
 	 * (tie).
 	 */
 	public String playRound(String player1, String player2) {
-		// TODO: implement
-		return null;
+		// 1. Züge generieren
+		Move move1 = randomMove();
+		Move move2 = randomMove();
+		
+		// 2. Match ausgeben
+		System.out.println(player1 + " (" + move1 + ") vs " + player2 + " (" + move2 + ")");
+		
+		// 4. Unentschieden prüfen
+		if (move1 == move2) {
+			return null;
+		}
+		
+		// 3. Gewinner ermitteln
+		if (beats(move1, move2)) {
+			return player1;
+		} else {
+			return player2; // Wenn es kein Unentschieden ist und player1 nicht gewinnt, gewinnt player2
+		}
 	}
 
 	/**
 	 * Returns a random move: "ROCK", "PAPER", or "SCISSORS".
-	 *
 	 */
 	public Move randomMove() {
 		return Move.values()[random.nextInt(3)];
@@ -95,7 +134,33 @@ public class RPSTournament {
 	 * TODO: implement the three winning cases.
 	 */
 	public static boolean beats(Move move1, Move move2) {
-		// TODO: implement
+		// Schere-Stein-Papier Logik:
+		if (move1 == Move.ROCK && move2 == Move.SCISSORS) {
+			return true;
+		}
+		if (move1 == Move.SCISSORS && move2 == Move.PAPER) {
+			return true;
+		}
+		if (move1 == Move.PAPER && move2 == Move.ROCK) {
+			return true;
+		}
+		
+		// In allen anderen Fällen (Verloren oder Unentschieden) gewinnt move1 nicht
 		return false;
 	}
 }
+
+/*
+ * ANTWORT AUF DIE THEORIE-FRAGE AUS DER AUFGABENSTELLUNG:
+ * Warum ist hier eine Queue das passende Datenstruktur und kein Stack?
+
+ * Eine Queue funktioniert nach dem FIFO-Prinzip (First-In-First-Out).
+ * Dadurch wird sichergestellt, dass das Turnier fair abläuft, also wie ein
+ * echtes Turnier-Bracket (Runde 1, Runde 2 usw.). 
+ * * Wenn wir einen Stack (LIFO: Last-In-First-Out) nutzen würden, würde der
+ * Gewinner eines Matches oben auf den Stapel gelegt werden. Er müsste dann 
+ * sofort im nächsten Spiel wieder antreten, und wieder, und wieder, bis er
+ * ausscheidet. Die restlichen Spieler ganz unten im Stapel würden ewig warten.
+ * Die Queue sorgt dafür, dass jeder Spieler erst einmal an die Reihe kommt, 
+ * bevor die nächste Runde startet!
+ */

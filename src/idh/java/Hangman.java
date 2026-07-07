@@ -9,12 +9,12 @@ import java.util.Scanner;
  *
  * The secret word is passed in when a Hangman object is created. The
  * player guesses one letter at a time. The program should:
- *   - Keep track of every letter guessed so far in a Set (no duplicates
- *     possible, and checking "have we seen this letter?" is instant).
- *   - Display the word so far, showing guessed letters and blanks (_)
- *     for letters not yet guessed.
- *   - Count wrong guesses, and end the game after too many mistakes.
- *   - Warn the player if they guess a letter they already tried.
+ * - Keep track of every letter guessed so far in a Set (no duplicates
+ * possible, and checking "have we seen this letter?" is instant).
+ * - Display the word so far, showing guessed letters and blanks (_)
+ * for letters not yet guessed.
+ * - Count wrong guesses, and end the game after too many mistakes.
+ * - Warn the player if they guess a letter they already tried.
  *
  * Your job: implement the methods marked with TODO.
  */
@@ -33,7 +33,9 @@ public class Hangman {
     }
 
     public static void main(String[] args) {
-        Hangman game = new Hangman("computer");
+        // Falls du Kommandozeilenargumente nutzen willst:
+        String word = args.length > 0 ? args[0] : "COMPUTER";
+        Hangman game = new Hangman(word);
         game.play();
     }
 
@@ -55,7 +57,10 @@ public class Hangman {
             }
 
             System.out.print("Guess a letter: ");
-            char guess = scanner.nextLine().toUpperCase().charAt(0);
+            String input = scanner.nextLine().trim().toUpperCase();
+            
+            if(input.isEmpty()) continue; // Fehler abfangen, falls einfach nur Enter gedrückt wird
+            char guess = input.charAt(0);
 
             if (alreadyGuessed(guess)) {
                 System.out.println("You already tried '" + guess + "'! Try a different letter.");
@@ -82,45 +87,47 @@ public class Hangman {
 
     /**
      * Returns true if this letter has already been guessed before.
-     *
-     * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
-        return false;
+        // Ein Set macht diese Prüfung extrem einfach:
+        return guessedLetters.contains(letter);
     }
 
     /**
      * Builds the current display version of the word, e.g. for secretWord
      * "COMPUTER" and guessedLetters {C, O, T}, this should return:
-     *   "C O _ _ _ T E R"
+     * "C O _ _ _ T E R"
      * Only show letters that are in guessedLetters; otherwise show '_'.
      * Separate each character with a space for readability.
-     *
-     * TODO:
-     *  1. Build a String (or StringBuilder) by looping over each character
-     *     of secretWord.
-     *  2. If the character is in guessedLetters, add it to the result.
-     *     Otherwise add '_'.
-     *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+        StringBuilder display = new StringBuilder();
+        
+        // Wir gehen jeden Buchstaben im geheimen Wort durch
+        for (char c : secretWord.toCharArray()) {
+            if (guessedLetters.contains(c)) {
+                display.append(c).append(" ");
+            } else {
+                display.append("_ ");
+            }
+        }
+        
+        // trim() entfernt das letzte überflüssige Leerzeichen am Ende
+        return display.toString().trim();
     }
 
     /**
      * Returns true if every letter in secretWord is contained in
      * guessedLetters (i.e. the player has fully revealed the word).
-     *
-     * TODO:
-     *  1. Loop over each character in secretWord.
-     *  2. If any character is NOT in guessedLetters, return false.
-     *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+        // Wir prüfen, ob es IRGENDEINEN Buchstaben gibt, der noch nicht geraten wurde
+        for (char c : secretWord.toCharArray()) {
+            if (!guessedLetters.contains(c)) {
+                return false; // Sobald ein Buchstabe fehlt -> Wort noch nicht komplett
+            }
+        }
+        return true; // Alle Buchstaben waren im Set -> Wort ist komplett!
     }
 
     /**
@@ -192,3 +199,19 @@ public class Hangman {
         return stages[index];
     }
 }
+
+/*
+ * ANTWORT AUF DIE THEORIE-FRAGE AUS DER AUFGABENSTELLUNG:
+ * Warum bietet sich für die geratenen Buchstaben ein Set und keine List an?
+ 
+ * 1. Keine Duplikate erlaubt: 
+ * Ein Set (wie das hier verwendete HashSet) verhindert automatisch, dass 
+ * Elemente doppelt gespeichert werden. Bei einer List müssten wir manuell 
+ * prüfen und verhindern, dass derselbe Buchstabe mehrfach eingetragen wird.
+ 
+ * 2. Bessere Performance (Geschwindigkeit): 
+ * Die Methode .contains() ist bei einem HashSet extrem schnell (O(1)). Java 
+ * weiß durch die Hash-Funktion sofort, ob der Buchstabe schon vorhanden ist. 
+ * Bei einer List (O(n)) müsste Java im schlimmsten Fall die gesamte Liste 
+ * von vorne bis hinten durchsuchen, um den Buchstaben zu finden.
+ */
