@@ -19,6 +19,7 @@ import java.util.Scanner;
  * Your job: implement the methods marked with TODO.
  */
 public class Hangman {
+	
 
     private static final int MAX_WRONG_GUESSES = 6;
 
@@ -86,7 +87,9 @@ public class Hangman {
      * TODO: implement using Set.contains() on guessedLetters
      */
     public boolean alreadyGuessed(char letter) {
-        // TODO: implement
+        if (guessedLetters.contains(letter)) {
+        	return true;
+        }
         return false;
     }
 
@@ -105,8 +108,17 @@ public class Hangman {
      *  3. Add a space between characters for readability.
      */
     public String buildDisplayWord() {
-        // TODO: implement
-        return null;
+    	StringBuilder DisplayWord = new StringBuilder();
+        for ( int i = 0; i < secretWord.length(); i++) {
+        	char letter = secretWord.charAt(i);
+        	if(guessedLetters.contains(letter)) {
+        		DisplayWord.append(letter + " ");
+        		
+        	}else {
+        			DisplayWord.append("_");
+        		} 
+        }
+        return DisplayWord.toString();
     }
 
     /**
@@ -119,8 +131,13 @@ public class Hangman {
      *  3. If you get through the whole word, return true.
      */
     public boolean isWordFullyGuessed() {
-        // TODO: implement
-        return false;
+        for(int i = 0; i < secretWord.length(); i++) {
+        	char letter = secretWord.charAt(i);
+        	if (!guessedLetters.contains(letter)) {
+        		return false;
+        	}
+        }
+        return true;
     }
 
     /**
