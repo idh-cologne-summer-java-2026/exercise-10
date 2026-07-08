@@ -76,7 +76,7 @@ public class RPSTournament {
 
 	public String runTournamentActual() {
 		Queue <String> currentRoster = new LinkedList <String>(players); //gets players Queue as parameter
-//		Queue <String> nextRoster = new LinkedList<String>(); //this queue would get the players passing the 1st round, cannot pass same Queue players here
+//		Queue <String> nextRoster = new LinkedList<String>(); //this queue would get the players passing the 1st round, cannot pass same Queue players here. Not declaring it here causes problems later on (s. lines 101 + 108)
 		
 		if(currentRoster.isEmpty()) {
 			throw new NoSuchElementException("No element found, queue is empty.");
@@ -97,8 +97,9 @@ public class RPSTournament {
 				System.out.println("No winner, playing another round.");
 				roundWinner = playRound(p1, p2);
 			}
+//			nextRoster.add(roundWinner); //it would work here
 			}
-			nextRoster.add(roundWinner); //put winner in Queue for the next Round
+			nextRoster.add(roundWinner); //put winner in Queue for the next Round. Out of Scope here I guess?
 		}
 //		currentRoster = nextRoster;
 		
