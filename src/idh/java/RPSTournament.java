@@ -1,6 +1,7 @@
 package idh.java;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Random;
 
@@ -30,25 +31,24 @@ public class RPSTournament {
 	enum Move {
 		ROCK, PAPER, SCISSORS
 	};
-	Queue<String> players = new LinkedList<String>();
+	Queue<String> players = new LinkedList<String>(); //List containing the players. Used in all subsequent methods.
 
 	public static void main(String[] args) {
 
 		RPSTournament rps = new RPSTournament();
-		rps.addPlayer("Alice");
+		rps.addPlayer("Alice"); //Player String Objects added to Queue, using add Players() below.
 		rps.addPlayer("Bob");
 		rps.addPlayer("Charlie");
 		rps.addPlayer("Dana");
 		rps.addPlayer("Eve");
-
-		String champion = rps.runTournament();
-		System.out.println("\n The champion is: " + champion);
+		String champion = rps.runTournamentActual(); //playing the game until a winner is decided
+		System.out.println("\nThe champion is: " + champion);
 	}
-
+	/** Used to add Player String Objects into the Queue**/
 	public void addPlayer(String playerName) {
 		this.players.add(playerName);
 	}
-
+	
 	/**
 	 * Runs the tournament until only one player remains. Returns the name of the
 	 * champion.
@@ -58,22 +58,59 @@ public class RPSTournament {
 	 * there's a winner, print the result and enqueue the winner at the back of the
 	 * queue. d. If it's a tie, print that it's a tie and put BOTH players back in
 	 * the queue (order doesn't matter much, but be consistent). 2. When only one
-	 * player remains, return their name.
+	 * player remains, return their name. CORRECTION NEEDED
 	 */
-	public String runTournament() {
-		// TODO: implement
-		String firstPlayer = null, secondPlayer = null;
-		Queue <String> tempQueue = new LinkedList<String>();
-		for(int i = 0; players.size() > 1 && i < 2; i++) {
-			String removed = players.remove(); //removes the first 2 Players
-			tempQueue.add(removed); //save in new Queue to work with
-			firstPlayer = tempQueue.poll();
-			secondPlayer = tempQueue.poll();
-		}
-		return this.playRound(firstPlayer, secondPlayer); //enters first 2 players in next round
-		 
-	}
+//	public String runTournament() {
+//		String firstPlayer = null, secondPlayer = null;
+//		Queue <String> tempQueue = new LinkedList<String>();
+//		while(players.peek() != null) {
+//		for(int i = 0; players.size() > 1 && i < 2; i++) {
+//			String removed = players.remove(); //removes the first 2 Players
+//			tempQueue.add(removed); //save in new Queue to work with
+//			firstPlayer = tempQueue.poll();
+//			secondPlayer = tempQueue.poll();
+//			}
+//		}
+//		return this.playRound(firstPlayer, secondPlayer); //enters first 2 players in next round
+//	}
 
+	public String runTournamentActual() {
+		Queue <String> currentRoster = new LinkedList <String>(players); //gets players Queue as parameter
+//		Queue <String> nextRoster = new LinkedList<String>(); //this queue would get the players passing the 1st round, cannot pass same Queue players here
+		
+		if(currentRoster.isEmpty()) {
+			throw new NoSuchElementException("No element found, queue is empty.");
+		}
+		
+		//tournament continues as long as more than 1 player is left
+		while(currentRoster.size() > 1) {
+			Queue<String>nextRoster = new LinkedList<String>();
+			
+			
+			while(currentRoster.size() >= 2) {
+			String p1 = currentRoster.remove(); //take out a player and save it to variable
+			String p2 = currentRoster.remove();
+			String roundWinner = playRound(p1,p2); //plays a round, returns winner + save to variable
+			
+			//In case of a draw: No winner (== null), hence we try again
+			while(roundWinner == null) {
+				System.out.println("No winner, playing another round.");
+				roundWinner = playRound(p1, p2);
+			}
+			}
+			nextRoster.add(roundWinner); //put winner in Queue for the next Round
+		}
+//		currentRoster = nextRoster;
+		
+		if(currentRoster.size() == 1) {
+			String loneP = currentRoster.remove();
+			System.out.println(loneP + " has no opponent left, automaticlly wins.");
+			nextRoster.add(loneP);
+		}
+		currentRoster = nextRoster;
+		return currentRoster.poll();//retrieves + returns last remaining player --> Winner
+	}
+	
 	/**
 	 * Plays one round of Rock-Paper-Scissors between two players. Returns the name
 	 * of the winner, or null if it's a tie.
@@ -84,7 +121,21 @@ public class RPSTournament {
 	 * (tie).
 	 */
 	public String playRound(String player1, String player2) {
-		// TODO: implement
+		RPSTournament player = new RPSTournament();
+		Move p1M = player.randomMove(); Move p2M = player.randomMove(); //Random moves for each player
+		System.out.println(player1 + ": " + p1M + " | " + player2 + ": " + p2M + "." );
+		
+		if(beats(p1M, p2M)) {
+			System.out.println(player1 + "(" + p1M + ")" + " " + "Winner");
+			return player1;
+		}
+		
+		if(beats(p2M, p1M)) {
+			System.out.println(player2 + "(" + p2M + ")" + " Winner");
+//			System.out.println(player2 + "(" + p2M + ")" + " " + "Winner: " + player2);
+			return player2;
+		}
+		System.out.println("Draw.");
 		return null;
 	}
 
@@ -100,10 +151,18 @@ public class RPSTournament {
 	 * Returns true if move1 beats move2 according to standard Rock-Paper-Scissors
 	 * rules.
 	 *
-	 * TODO: implement the three winning cases.
+	 * 
 	 */
 	public static boolean beats(Move move1, Move move2) {
-		// TODO: implement
-		return false;
+		switch(move1) {
+		case ROCK:
+			return move2 == Move.SCISSORS;
+		case PAPER:
+			return move2 == Move.ROCK;
+		case SCISSORS:
+			return move2 == Move.PAPER;
+		default: System.out.println("Something went wrong.");
+			throw new IllegalArgumentException("Something went wrong");
+		}
 	}
 }
